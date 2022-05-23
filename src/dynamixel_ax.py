@@ -175,13 +175,13 @@ class DynamixelAx:
 
 if __name__ == '__main__':
     rospy.init_node('dynamixel_ax')
-    dynamixe_mx = DynamixelAx()
-    dynamixe_mx.setting_publisher()
-    dynamixe_mx.setting_serial_port()
-    dynamixe_mx.setting_board()
+    dynamixel_ax = DynamixelAx()
+    dynamixel_ax.setting_publisher()
+    dynamixel_ax.setting_serial_port()
+    dynamixel_ax.setting_board()
     try:
-        dynamixe_mx.go_origin()
-        dynamixe_mx.go_scan()
-        dynamixe_mx.exit_board()
+        dynamixel_ax.go_origin()
+        dynamixel_ax.go_scan()
+        dynamixel_ax.exit_board()
     except rospy.ROSInterruptException:
-        dynamixe_mx.exit_board()
+        dynamixel_ax.exit_board()

@@ -2,7 +2,7 @@ dynamixel_ax:
   port: "/dev/ttyACM0"
   baudrate_board: 115200
   init_pose: 0
-  final_pose: 1023
+  final_pose: 614
   sleep_org: 30
   sleep_scan: 10
   delta_error: 5
