@@ -1,9 +1,9 @@
 - config 
-    - params -nul
+    - params
 
 - src
     - OpenCM_ax.ino
-    - dynamixel_ax - ok-
+    - dynamixel_ax 
 
 - CMakeLists 
 - package 
