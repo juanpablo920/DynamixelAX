@@ -27,4 +27,6 @@
     source devel/setup.bash
     rosrun dynamixel_ax dynamixel_ax.py
 
+    rosrun rqt_topic rqt_topic
+    rosrun rqt_plot rqt_plot
     /dynamixel_ax/pose/point/x
