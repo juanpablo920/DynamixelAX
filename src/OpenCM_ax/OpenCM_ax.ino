@@ -1,25 +1,24 @@
-
 #include <DynamixelSDK.h>
 
-// Control table address (MX-series with Protocol 2.0)
-#define ADDR_MX_TORQUE_ENABLE           64             // Control table address is different in Dynamixel model
-#define ADDR_MX_GOAL_POSITION           116
-#define ADDR_MX_PRESENT_POSITION        132
+// AX-series Control table address
+#define ADDR_AX_TORQUE_ENABLE           24                 // Control table address is different in Dynamixel model
+#define ADDR_AX_GOAL_POSITION           30
+#define ADDR_AX_PRESENT_POSITION        36
 
 // Protocol version
-#define PROTOCOL_VERSION                2.0           // See which protocol version is used in the Dynamixel
+#define PROTOCOL_VERSION                1.0                 // See which protocol version is used in the Dynamixel
 
 // Default setting
-#define DXL_ID                          1             // Dynamixel ID: 1
-#define BAUDRATE                        57600
-#define DEVICENAME                      "3"           // DEVICENAME "1" -> Serial1(OpenCM9.04 DXL TTL Ports)
-// DEVICENAME "2" -> Serial2
-// DEVICENAME "3" -> Serial3(OpenCM 485 EXP)
-#define TORQUE_ENABLE                   1             // Value for enabling the torque
-#define TORQUE_DISABLE                  0             // Value for disabling the torque
-#define DXL_MINIMUM_POSITION_VALUE      0             // Dynamixel will rotate between this value
-#define DXL_MAXIMUM_POSITION_VALUE      4000          // and this value (note that the Dynamixel would not move when the position value is out of movable range. Check e-manual about the range of the Dynamixel you use.)
-#define DXL_MOVING_STATUS_THRESHOLD     20            // Dynamixel moving status threshold
+#define DXL_ID                          1                   // Dynamixel ID: 1
+#define BAUDRATE                        1000000
+#define DEVICENAME                      "3"                 //DEVICENAME "1" -> Serial1(OpenCM9.04 DXL TTL Ports)
+//DEVICENAME "2" -> Serial2
+//DEVICENAME "3" -> Serial3(OpenCM 485 EXP)
+#define TORQUE_ENABLE                   1                   // Value for enabling the torque
+#define TORQUE_DISABLE                  0                   // Value for disabling the torque
+#define DXL_MINIMUM_POSITION_VALUE      100                 // Dynamixel will rotate between this value
+#define DXL_MAXIMUM_POSITION_VALUE      1000                // and this value (note that the Dynamixel would not move when the position value is out of movable range. Check e-manual about the range of the Dynamixel you use.)
+#define DXL_MOVING_STATUS_THRESHOLD     20                  // Dynamixel moving status threshold
 
 #define ESC_ASCII_VALUE                 0x1b
 
@@ -65,7 +64,7 @@ void setup() {
   int torque_tmp = 1;
 
   // Enable Dynamixel Torque
-  dxl_comm_result = packetHandler->write1ByteTxRx(portHandler, DXL_ID, ADDR_MX_TORQUE_ENABLE, TORQUE_ENABLE, &dxl_error);
+  dxl_comm_result = packetHandler->write1ByteTxRx(portHandler, DXL_ID, ADDR_AX_TORQUE_ENABLE, TORQUE_ENABLE, &dxl_error);
   if (dxl_comm_result != COMM_SUCCESS) {
     packetHandler->getTxRxResult(dxl_comm_result);
     Serial.println("dynamixel_failed_connected");
@@ -83,7 +82,7 @@ void setup() {
 
   String input_tmp;
   int goal_posse = 0;
-  int32_t present_pose = 0;
+  int16_t present_pose = 0;
 
   while (torque_tmp) {
 
@@ -94,7 +93,7 @@ void setup() {
 
       if (input_tmp == "get_pose") {
 
-        dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, DXL_ID, ADDR_MX_PRESENT_POSITION, (uint32_t*)&present_pose, &dxl_error);
+        dxl_comm_result = packetHandler->read2ByteTxRx(portHandler, DXL_ID, ADDR_AX_PRESENT_POSITION, (uint16_t*)&present_pose, &dxl_error);
 
         if (dxl_comm_result != COMM_SUCCESS) {
           packetHandler->getTxRxResult(dxl_comm_result);
@@ -116,7 +115,7 @@ void setup() {
         input_tmp = Serial.readString();
         goal_posse = input_tmp.toInt();
 
-        dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, DXL_ID, ADDR_MX_GOAL_POSITION, goal_posse, &dxl_error);
+        dxl_comm_result = packetHandler->write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_GOAL_POSITION, goal_posse, &dxl_error);
 
         if (dxl_comm_result != COMM_SUCCESS) {
           packetHandler->getTxRxResult(dxl_comm_result);
@@ -154,7 +153,7 @@ void setup() {
         input_tmp = Serial.readString();
         delta_error = input_tmp.toInt();
 
-        dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, DXL_ID, ADDR_MX_PRESENT_POSITION, (uint32_t*)&present_pose, &dxl_error);
+        dxl_comm_result = packetHandler->read2ByteTxRx(portHandler, DXL_ID, ADDR_AX_PRESENT_POSITION, (uint16_t*)&present_pose, &dxl_error);
 
         if (dxl_comm_result != COMM_SUCCESS) {
           packetHandler->getTxRxResult(dxl_comm_result);
@@ -182,7 +181,7 @@ void setup() {
             new_pos = present_pose + sleep;
           }
 
-          dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, DXL_ID, ADDR_MX_GOAL_POSITION, new_pos, &dxl_error);
+          dxl_comm_result = packetHandler->write2ByteTxRx(portHandler, DXL_ID, ADDR_AX_GOAL_POSITION, new_pos, &dxl_error);
 
           if (dxl_comm_result != COMM_SUCCESS) {
             packetHandler->getTxRxResult(dxl_comm_result);
@@ -195,7 +194,7 @@ void setup() {
             break;
           }
 
-          dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, DXL_ID, ADDR_MX_PRESENT_POSITION, (uint32_t*)&present_pose, &dxl_error);
+          dxl_comm_result = packetHandler->read2ByteTxRx(portHandler, DXL_ID, ADDR_AX_PRESENT_POSITION, (uint16_t*)&present_pose, &dxl_error);
 
           if (dxl_comm_result != COMM_SUCCESS) {
             packetHandler->getTxRxResult(dxl_comm_result);
@@ -221,7 +220,7 @@ void setup() {
   }
 
   // Disable Dynamixel Torque
-  dxl_comm_result = packetHandler->write1ByteTxRx(portHandler, DXL_ID, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE, &dxl_error);
+  dxl_comm_result = packetHandler->write1ByteTxRx(portHandler, DXL_ID, ADDR_AX_TORQUE_ENABLE, TORQUE_DISABLE, &dxl_error);
   if (dxl_comm_result != COMM_SUCCESS)
   {
     packetHandler->getTxRxResult(dxl_comm_result);
