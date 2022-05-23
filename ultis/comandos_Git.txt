@@ -1,0 +1,27 @@
+- johan_Avila_U :  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 
+
+- git branch 
+	lista las remas (yo estoy en '*')
+
+- git checkout nombre_rama
+	para cambiar de rama
+
+- git status 
+	para saber el estado de la rama actual (Cambios o no )
+
+- git add .
+	agrega todo 
+
+- git checkout .
+
+- git commit -m "descripcion del cambio o creacion " 
+
+- git commit -m "Actulizado" 
+
+- git log 
+	historial de ramas 
+
+- git config --global user.email "2420171062@estudiantesunibague.edu.co"
+- git config --global user.name "johan_Avila_U"
+
+.gitignore

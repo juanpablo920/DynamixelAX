@@ -1,0 +1,30 @@
+- Rosbag 
+    rosbag play -l 04.bag
+
+- rostopic
+    rostopic list
+    rostopic info " topico "
+
+- workspace_catkin 
+    catkin_make
+    catkin_create_pkg dynamixel_ax rospy roscpp std_msgs sensor_msgs geometry_msgs 
+    touch " script.py "
+    sudo chmod u+x " script.py "
+
+- ssh 
+    ssh -Y pi@10.42.0.254 ----> PC JPablo
+    pss: pi.123
+
+- bash
+    bash Init_termial.sh
+
+- ls -R
+    mkdir
+    mv "cambiar nombre" "nuevo nombre"
+    rm "eliminar archivos" 
+
+- Rosrun
+    source devel/setup.bash
+    rosrun dynamixel_ax dynamixel_ax.py
+
+    /dynamixel_ax/pose/point/x
